@@ -1,4 +1,4 @@
-import useAuth from '@wasp/auth'
+import useAuth from '@wasp/auth/useAuth'
 
 export function Profile() {
   const { data: user } = useAuth()
