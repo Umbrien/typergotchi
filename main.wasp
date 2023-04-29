@@ -13,11 +13,11 @@ app typergotchi {
         },
         emailVerification: {
           clientRoute: EmailVerificationRoute,
-          getEmailContentFn: import { getVerificationEmailContent } from "@server/auth/email",
+          getEmailContentFn: import { getVerificationEmailContent } from "@server/auth/email.js",
         },
         passwordReset: {
           clientRoute: PasswordResetRoute,
-          getEmailContentFn: import { getPasswordResetEmailContent } from "@server/auth/email",
+          getEmailContentFn: import { getPasswordResetEmailContent } from "@server/auth/email.js",
         },
         allowUnverifiedLogin: false,
       },
@@ -36,7 +36,7 @@ entity User {=psl
     id                        Int           @id @default(autoincrement())
     email                     String?       @unique
     password                  String?
-    username                  String        @unique
+    // username                  String        @unique
     isEmailVerified           Boolean       @default(false)
     emailVerificationSentAt   DateTime?
     passwordResetSentAt       DateTime?
