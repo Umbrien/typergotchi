@@ -6,16 +6,37 @@ app typergotchi {
   auth: {
     userEntity: User,
     methods: {
-      usernameAndPassword: {},
+      email: {
+        fromField: {
+          name: "Yo, it's fuckign typergotchi",
+          email: "kalugin.serej@gmail.com",
+        },
+        emailVerification: {
+          clientRoute: EmailVerificationRoute,
+          getEmailContentFn: import { getVerificationEmailContent } from "@server/auth/email",
+        },
+        passwordReset: {
+          clientRoute: PasswordResetRoute,
+          getEmailContentFn: import { getPasswordResetEmailContent } from "@server/auth/email",
+        },
+        allowUnverifiedLogin: false,
+      },
     },
     onAuthFailedRedirectTo: "/login"
+  },
+  emailSender: {
+    provider: SMTP,
+    defaultFrom: {
+        name: "Example",
+        email: "kalugin.serej@gmail.com"
+    },
   },
 }
 entity User {=psl
     id                        Int           @id @default(autoincrement())
-    username                  String        @unique
     email                     String?       @unique
-    password                  String
+    password                  String?
+    username                  String        @unique
     isEmailVerified           Boolean       @default(false)
     emailVerificationSentAt   DateTime?
     passwordResetSentAt       DateTime?
@@ -28,10 +49,25 @@ page MainPage {
 
 route LoginRoute { path: "/login", to: LoginPage }
 page LoginPage {
-  component: import { LoginPage } from "@client/LoginPage"
+  component: import { LoginPage } from "@client/pages/auth/LoginPage"
 }
 
 route SignupRoute { path: "/signup", to: SignupPage }
 page SignupPage {
-  component: import { SignupPage } from "@client/SignupPage"
+  component: import { SignupPage } from "@client/pages/auth/SignupPage"
+}
+
+route RequestPasswordResetRoute { path: "/request-password-reset", to: RequestPasswordResetPage }
+page RequestPasswordResetPage {
+  component: import { RequestPasswordReset } from "@client/pages/auth/RequestPasswordReset.tsx",
+}
+
+route PasswordResetRoute { path: "/password-reset", to: PasswordResetPage }
+page PasswordResetPage {
+  component: import { PasswordReset } from "@client/pages/auth/PasswordReset.tsx",
+}
+
+route EmailVerificationRoute { path: "/email-verification", to: EmailVerificationPage }
+page EmailVerificationPage {
+  component: import { EmailVerification } from "@client/pages/auth/EmailVerification.tsx",
 }
