@@ -3,7 +3,7 @@ import { GetVerificationEmailContentFn, GetPasswordResetEmailContentFn } from '@
 export const getVerificationEmailContent: GetVerificationEmailContentFn = ({
   verificationLink,
 }) => ({
-  subject: 'Its fucking typergotchi time',
+  subject: 'Its typergotchi time!',
   text: `Click the link below to verify your email: ${verificationLink}`,
   html: `
         <p>Click the link below to verify your email</p>
@@ -14,7 +14,7 @@ export const getVerificationEmailContent: GetVerificationEmailContentFn = ({
 export const getPasswordResetEmailContent: GetPasswordResetEmailContentFn = ({
   passwordResetLink,
 }) => ({
-  subject: 'Dude. Are you again forgot your password?',
+  subject: 'Dude. Are you forgot your password again?',
   text: `Click the link below to reset your password: ${passwordResetLink}`,
   html: `
         <p>Click the link below to reset your password</p>
