@@ -8,7 +8,7 @@ app typergotchi {
     methods: {
       email: {
         fromField: {
-          name: "Yo, it's fuckign typergotchi",
+          name: "Typergotchi",
           email: "kalugin.serej@gmail.com",
         },
         emailVerification: {
@@ -27,7 +27,7 @@ app typergotchi {
   emailSender: {
     provider: SMTP,
     defaultFrom: {
-        name: "Example",
+        name: "Typergotchi",
         email: "kalugin.serej@gmail.com"
     },
   },
@@ -70,4 +70,8 @@ page PasswordResetPage {
 route EmailVerificationRoute { path: "/email-verification", to: EmailVerificationPage }
 page EmailVerificationPage {
   component: import { EmailVerification } from "@client/pages/auth/EmailVerification.tsx",
+}
+
+query generateText {
+  fn: import { generateText } from "@server/generateText.js",
 }
