@@ -31,6 +31,9 @@ app typergotchi {
         email: "kalugin.serej@gmail.com"
     },
   },
+  dependencies: [
+    ("prettier", "^2.8.8"),
+  ]
 }
 entity User {=psl
     id                        Int           @id @default(autoincrement())

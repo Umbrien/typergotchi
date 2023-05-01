@@ -1,0 +1,9 @@
+{
+  "name": "typergotchi",
+  "version": "1.0.0",
+  "license": "ISC",
+  "dependencies": {
+    "prettier": "^2.8.8",
+    "prettier-plugin-tailwindcss": "^0.2.8"
+  }
+}
