@@ -34,16 +34,70 @@ app typergotchi {
         email: "kalugin.serej@gmail.com"
     },
   },
+  dependencies: [
+    ("prettier", "^2.8.8"),
+    ("@tailwindcss/forms", "^0.5.3"),
+  ]
 }
+
 entity User {=psl
-    id                        Int           @id @default(autoincrement())
-    email                     String?       @unique
-    password                  String?
-    // username                  String        @unique
-    isEmailVerified           Boolean       @default(false)
-    emailVerificationSentAt   DateTime?
-    passwordResetSentAt       DateTime?
+  id                      Int           @id @default(autoincrement())
+  email                   String?       @unique
+  password                String?
+  isEmailVerified         Boolean       @default(false)
+  emailVerificationSentAt DateTime?
+  passwordResetSentAt     DateTime?
+  // registration step 2 fields
+  nickname                String?       @unique
+  description             String?
+  balance                 Int           @default(0)
+  soloPassings            SoloPassing[]
+  inventory               Inventory?
+  daBoiSelectedSkinId     Int?
+  daBoiSelectedSkin       DaBoiSkin?    @relation(fields: [daBoiSelectedSkinId], references: [id])
+  daBoiSelectedArmorId    Int?
+  daBoiSelectedArmor      DaBoiArmor?   @relation(fields: [daBoiSelectedArmorId], references: [id])
 psl=}
+
+entity SoloPassing {=psl
+  id     Int  @id @default(autoincrement())
+  cpm    Int
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+psl=}
+
+entity DaBoiSkin {=psl
+  id              Int    @id @default(autoincrement())
+  name            String
+  img             String
+  imgEmotionHappy String
+  imgEmotionSad   String
+  user            User[]
+psl=}
+
+entity DaBoiArmor {=psl
+  id         Int         @id @default(autoincrement())
+  name       String      @unique
+  price      Int
+  img        String
+  imgBroken1 String
+  imgBroken2 String
+  inventory  Inventory[]
+  user       User[]
+psl=}
+
+entity Inventory {=psl
+  id     Int          @id @default(autoincrement())
+  userId Int          @unique
+  user   User         @relation(fields: [userId], references: [id])
+  armor  DaBoiArmor[]
+psl=}
+
+
+query fetchDaBoiSkins {
+  fn: import { getDaBoiSkins } from "@server/queries/daBoi.js",
+  entities: [DaBoiSkin]
+}
 
 route RootRoute { path: "/", to: MainPage }
 page MainPage {
@@ -58,6 +112,11 @@ page LoginPage {
 route SignupRoute { path: "/signup", to: SignupPage }
 page SignupPage {
   component: import { SignupPage } from "@client/pages/auth/SignupPage"
+}
+
+route SignupStage2Route { path: "/signup-stage-2", to: SignupStage2Page }
+page SignupStage2Page {
+  component: import { SignupStage2 } from "@client/pages/auth/SignupStage2"
 }
 
 route RequestPasswordResetRoute { path: "/request-password-reset", to: RequestPasswordResetPage }

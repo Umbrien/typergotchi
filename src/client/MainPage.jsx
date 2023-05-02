@@ -1,7 +1,19 @@
-import waspLogo from './waspLogo.png'
-import './Main.css'
+import { useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import useAuth from "@wasp/auth/useAuth";
+import waspLogo from "./waspLogo.png";
+import "./Main.css";
 
 const MainPage = () => {
+  const { data: user } = useAuth();
+  const history = useHistory();
+
+  useEffect(() => {
+    if (user && !(user.nickname && user.daBoiSelectedSkinId)) {
+      history.push("/signup-stage-2");
+    }
+  }, [user]);
+
   return (
     <div className="container">
       <main>
@@ -9,7 +21,9 @@ const MainPage = () => {
           <img src={waspLogo} alt="wasp" />
         </div>
 
-        <h2 className="welcome-title"> Welcome to Wasp - you just started a new app! </h2>
+        <h2 className="welcome-title">
+          Welcome to Wasp - you just started a new app!
+        </h2>
         <h3 className="welcome-subtitle">
           This is page <code>MainPage</code> located at route <code>/</code>.
           Open <code>src/client/MainPage.jsx</code> to edit it.
@@ -35,6 +49,6 @@ const MainPage = () => {
         </div>
       </main>
     </div>
-  )
-}
-export default MainPage
+  );
+};
+export default MainPage;
