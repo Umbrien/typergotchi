@@ -3,6 +3,9 @@ app typergotchi {
     version: "^0.10.2"
   },
   title: "typergotchi",
+  dependencies: [
+    ("esm-seedrandom", "3.0.5")
+  ],
   auth: {
     userEntity: User,
     methods: {
