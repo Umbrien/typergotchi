@@ -75,6 +75,11 @@ page EmailVerificationPage {
   component: import { EmailVerification } from "@client/pages/auth/EmailVerification.tsx",
 }
 
+route SoloModeRoute { path: "/solo-mode", to: SoloModePage }
+page SoloModePage {
+  component: import { SoloMode } from "@client/pages/soloMode.tsx",
+}
+
 query generateText {
-  fn: import { generateText } from "@server/generateText.js",
+  fn: import { generateText } from "@server/queries/generateText.js",
 }
