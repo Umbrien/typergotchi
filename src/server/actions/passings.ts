@@ -1,15 +1,10 @@
-import HttpError from '@wasp/core/HttpError.js';
-import { User, Prisma } from '@prisma/client';
+import HttpError from "@wasp/core/HttpError.js";
+import { addSoloPassingContext } from "../_types";
 
-type soloPassingContext = {
-  user: User;
-  entities: {
-    SoloPassing: Prisma.SoloPassingDelegate<{}>;
-    User:        Prisma.UserDelegate<{}>;
-  };
-};
-
-export async function addSoloPassing(args: {cpm: number}, context: soloPassingContext){
+export async function addSoloPassing(
+  args: { cpm: number },
+  context: addSoloPassingContext
+) {
   if (!context.user) {
     throw new HttpError(401);
   }
@@ -17,6 +12,6 @@ export async function addSoloPassing(args: {cpm: number}, context: soloPassingCo
     data: {
       cpm: args.cpm,
       user: { connect: { id: context.user.id } },
-    }
-  })
+    },
+  });
 }

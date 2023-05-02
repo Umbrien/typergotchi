@@ -12,3 +12,9 @@ export type getDaBoiSkinsContext = Context & {
     DaBoiSkin: Prisma.DaBoiSkinDelegate<{}>;
   };
 };
+
+export type addSoloPassingContext = Context & {
+  entities: {
+    SoloPassing: Prisma.SoloPassingDelegate<{}>;
+  };
+};
