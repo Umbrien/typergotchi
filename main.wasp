@@ -142,6 +142,16 @@ query generateText {
 }
 
 action addSoloPassing {
-  fn: import { addSoloPassing} from "@server/actions/passings.js",
+  fn: import { addSoloPassing } from "@server/actions/passings.js",
   entities: [SoloPassing]
+}
+
+action changeNickname {
+  fn: import { changeNickname } from "@server/actions/profile.js",
+  entities: [User]
+}
+
+action changeDaBoiSkin {
+  fn: import { changeDaBoiSkin } from "@server/actions/profile.js",
+  entities: [User]
 }

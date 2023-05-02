@@ -7,14 +7,15 @@ export type Context = {
   };
 };
 
-export type getDaBoiSkinsContext = Context & {
+export type daBoiSkinsContext = Context & {
   entities: {
     DaBoiSkin: Prisma.DaBoiSkinDelegate<{}>;
   };
 };
 
-export type addSoloPassingContext = Context & {
+export type soloPassingContext = Context & {
   entities: {
     SoloPassing: Prisma.SoloPassingDelegate<{}>;
   };
 };
+
