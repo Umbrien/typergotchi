@@ -1,18 +1,5 @@
-import { User, Prisma } from "@prisma/client";
+import { getDaBoiSkinsContext } from "./_types";
 
-type getDaBoiSkinsProps = {};
-
-type getDaBoiSkinsContext = {
-  user: User;
-  entities: {
-    DaBoiSkin: Prisma.DaBoiSkinDelegate<{}>;
-    User: Prisma.UserDelegate<{}>;
-  };
-};
-
-export const getDaBoiSkins = async (
-  args: getDaBoiSkinsProps,
-  context: getDaBoiSkinsContext
-) => {
+export const getDaBoiSkins = async ({}: {}, context: getDaBoiSkinsContext) => {
   return context.entities.DaBoiSkin.findMany({});
 };
