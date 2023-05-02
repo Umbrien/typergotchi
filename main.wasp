@@ -140,3 +140,8 @@ page SoloModePage {
 query generateText {
   fn: import { generateText } from "@server/queries/generateText.js",
 }
+
+action addSoloPassing {
+  fn: import { addSoloPassing} from "@server/actions/passings.js",
+  entities: [SoloPassing]
+}
