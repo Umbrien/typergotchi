@@ -2,7 +2,9 @@ import { useQuery } from "@wasp/queries";
 import generateText from "@wasp/queries/generateText";
 
 export function SoloMode() {
-  const { data: text } = useQuery(generateText, { length: { words: 10 } });
+  const { data: text } = useQuery(generateText, {
+    length: { words: 10 },
+  });
 
   if (!text) {
     return <div>No text yet</div>;
