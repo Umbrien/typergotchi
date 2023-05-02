@@ -6,6 +6,7 @@ const chanceOfNumber = 1/12;
 const chanceOfCapital = 1/15;
 const chanceOfPunctuation = 1/8;
 const wordsPerSecond = 4.2;
+const maxNumber = 9999;
 
 type generateTextProps = {
   includeNumbers?: boolean,
@@ -31,7 +32,7 @@ export function generateText({
   let generatedText = '';
   for (var counter:number = 0; counter < wordCount; counter++){
     if(includeNumbers && probability_check(chanceOfNumber)){
-      generatedText += Math.floor(seedRandom() * 1000);
+      generatedText += Math.floor(seedRandom() * maxNumber);
     }
     else{
       let newWord = wordList[Math.floor(seedRandom() * wordList.length)];
