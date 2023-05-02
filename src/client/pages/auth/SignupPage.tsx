@@ -1,11 +1,11 @@
-import { Link } from 'react-router-dom'
-import { SignupForm } from '@wasp/auth/forms/Signup'
+import { Link } from "react-router-dom";
+import { SignupForm } from "@wasp/auth/forms/Signup";
 
-export function SignupPage () {
+export function SignupPage() {
   return (
-    <div className="w-full h-full bg-white">
-      <div className="min-w-full min-h-[75vh] flex items-center justify-center">
-        <div className="w-full h-full max-w-sm p-5 bg-white">
+    <div className="h-full w-full bg-white">
+      <div className="flex min-h-[75vh] min-w-full items-center justify-center">
+        <div className="h-full w-full max-w-sm bg-white p-5">
           <div>
             <SignupForm />
             <br />
@@ -17,5 +17,5 @@ export function SignupPage () {
         </div>
       </div>
     </div>
-  )
+  );
 }
