@@ -3,12 +3,15 @@ app typergotchi {
     version: "^0.10.2"
   },
   title: "typergotchi",
+  dependencies: [
+    ("esm-seedrandom", "3.0.5")
+  ],
   auth: {
     userEntity: User,
     methods: {
       email: {
         fromField: {
-          name: "Yo, it's fuckign typergotchi",
+          name: "Typergotchi",
           email: "kalugin.serej@gmail.com",
         },
         emailVerification: {
@@ -27,7 +30,7 @@ app typergotchi {
   emailSender: {
     provider: SMTP,
     defaultFrom: {
-        name: "Example",
+        name: "Typergotchi",
         email: "kalugin.serej@gmail.com"
     },
   },
@@ -129,4 +132,13 @@ page PasswordResetPage {
 route EmailVerificationRoute { path: "/email-verification", to: EmailVerificationPage }
 page EmailVerificationPage {
   component: import { EmailVerification } from "@client/pages/auth/EmailVerification.tsx",
+}
+
+route SoloModeRoute { path: "/solo-mode", to: SoloModePage }
+page SoloModePage {
+  component: import { SoloMode } from "@client/pages/soloMode.tsx",
+}
+
+query generateText {
+  fn: import { generateText } from "@server/queries/generateText.js",
 }
