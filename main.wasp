@@ -3,9 +3,6 @@ app typergotchi {
     version: "^0.10.2"
   },
   title: "typergotchi",
-  dependencies: [
-    ("esm-seedrandom", "3.0.5")
-  ],
   auth: {
     userEntity: User,
     methods: {
@@ -37,6 +34,7 @@ app typergotchi {
   dependencies: [
     ("prettier", "^2.8.8"),
     ("@tailwindcss/forms", "^0.5.3"),
+    ("esm-seedrandom", "3.0.5")
   ]
 }
 
