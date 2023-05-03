@@ -1,17 +1,19 @@
 import HttpError from "@wasp/core/HttpError.js";
 import { soloPassingContext } from "../_types";
+import { AddSoloPassing } from "@wasp/actions/types";
+import { SoloPassing } from "@wasp/entities";
 
-export async function addSoloPassing(
-  args: { cpm: number },
-  context: soloPassingContext
-) {
+export const addSoloPassing: AddSoloPassing<
+  Pick<SoloPassing, "cpm">,
+  SoloPassing
+> = async ({ cpm }, context) => {
   if (!context.user) {
     throw new HttpError(401);
   }
   return context.entities.SoloPassing.create({
     data: {
-      cpm: args.cpm,
+      cpm: cpm,
       user: { connect: { id: context.user.id } },
     },
   });
-}
+};

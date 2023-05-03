@@ -1,62 +1,68 @@
-import HttpError from '@wasp/core/HttpError.js';
+import HttpError from "@wasp/core/HttpError.js";
 import { Context, inventoryContext } from "../_types";
-  
-export async function changeNickname(
-  { nickname }: { nickname: string },
-  context: Context
-){
+import {
+  ChangeNickname,
+  SetDaBoiSkin,
+  SetDaBoiArmor,
+} from "@wasp/actions/types";
+import { Inventory, SoloPassing, User } from "@wasp/entities";
+
+export const changeNickname: ChangeNickname<
+  Pick<User, "nickname">,
+  User
+> = async ({ nickname }, context) => {
   if (!context.user) {
     throw new HttpError(401);
   }
   const nicknameUsed = await context.entities.User.findUnique({
-    where: { nickname }
+    where: { nickname: nickname ?? undefined },
   });
-  if (nicknameUsed){
+  if (nicknameUsed) {
     throw new HttpError(409);
   }
   return context.entities.User.update({
     where: { id: context.user.id },
     data: {
-      nickname
-    }
-  })
-}
+      nickname,
+    },
+  });
+};
 
-export async function setDaBoiSkin(
-  { daBoiSkinId }: { daBoiSkinId: number },
-  context: Context
-){
+export const setDaBoiSkin: SetDaBoiSkin<
+  Pick<User, "daBoiSelectedSkinId">,
+  User
+> = async ({ daBoiSelectedSkinId }, context) => {
   if (!context.user) {
     throw new HttpError(401);
   }
   return context.entities.User.update({
     where: { id: context.user.id },
     data: {
-      daBoiSelectedSkinId: daBoiSkinId
-    }
-  })
-}
+      daBoiSelectedSkinId: daBoiSelectedSkinId,
+    },
+  });
+};
 
-export async function setDaBoiArmor(
-  { daBoiArmorId }: { daBoiArmorId: number },
-  context: inventoryContext
-){
+export const setDaBoiArmor: SetDaBoiArmor<
+  Pick<User, "daBoiSelectedArmorId">,
+  User
+> = async ({ daBoiSelectedArmorId }, context) => {
   if (!context.user) {
     throw new HttpError(401);
   }
   const userHaveSkin = await context.entities.Inventory.findUnique({
     where: {
       userId: context.user.id,
-      armorId: daBoiArmorId
-    }
+      armorId: daBoiSelectedArmorId ?? undefined,
+    },
   });
-  if (!userHaveSkin){
+  if (!userHaveSkin) {
     throw new HttpError(409);
   }
   return context.entities.User.update({
     where: { id: context.user.id },
     data: {
-      daBoiSelectedArmorId: daBoiArmorId
-    }
-  })  
-}
+      daBoiSelectedArmorId,
+    },
+  });
+};

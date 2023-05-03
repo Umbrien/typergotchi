@@ -156,3 +156,13 @@ action setDaBoiSkin {
   fn: import { setDaBoiSkin } from "@server/actions/profile.js",
   entities: [User]
 }
+
+action setDaBoiArmor {
+  fn: import { setDaBoiArmor } from "@server/actions/profile.js",
+  entities: [User, Inventory]
+}
+
+action buyDaBoiArmor {
+  fn: import { buyDaBoiArmor } from "@server/actions/shop.js",
+  entities: [User, Inventory, DaBoiArmor]
+}
