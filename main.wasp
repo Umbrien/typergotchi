@@ -78,8 +78,6 @@ entity DaBoiArmor {=psl
   name       String      @unique
   price      Int
   img        String
-  imgBroken1 String
-  imgBroken2 String
   inventory  Inventory[]
   user       User[]
 psl=}
