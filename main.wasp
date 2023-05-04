@@ -67,7 +67,6 @@ psl=}
 entity DaBoiSkin {=psl
   id              Int    @id @default(autoincrement())
   name            String
-  img             String
   imgEmotionHappy String
   imgEmotionSad   String
   user            User[]

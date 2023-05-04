@@ -133,7 +133,7 @@ export function SignupStage2() {
                   </span>
                 )}
                 <div className="my-3 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
-                  {daBoiSkins.map(({ id, img, name }) => (
+                  {daBoiSkins.map(({ id, imgEmotionHappy: img, name }) => (
                     <div
                       className={`flex flex-col items-center rounded-md border border-yellow-400 p-3 ${
                         selectedSkinId === id ? "bg-yellow-50" : ""
