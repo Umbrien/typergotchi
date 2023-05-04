@@ -31,10 +31,15 @@ app typergotchi {
         email: "kalugin.serej@gmail.com"
     },
   },
+  db: {
+    system: PostgreSQL,
+  },
+
   dependencies: [
     ("prettier", "^2.8.8"),
     ("@tailwindcss/forms", "^0.5.3"),
-    ("esm-seedrandom", "3.0.5")
+    ("esm-seedrandom", "3.0.5"),
+    ("jimp", "0.22.7")
   ]
 }
 
@@ -51,6 +56,8 @@ entity User {=psl
   balance                 Int           @default(0)
   soloPassings            SoloPassing[]
   inventory               Inventory?
+  daBoiHappyImg           String?
+  daBoiSadImg             String?
   daBoiSelectedSkinId     Int?
   daBoiSelectedSkin       DaBoiSkin?    @relation(fields: [daBoiSelectedSkinId], references: [id])
   daBoiSelectedArmorId    Int?
@@ -65,11 +72,11 @@ entity SoloPassing {=psl
 psl=}
 
 entity DaBoiSkin {=psl
-  id              Int    @id @default(autoincrement())
-  name            String
-  imgEmotionHappy String
-  imgEmotionSad   String
-  user            User[]
+  id       Int    @id @default(autoincrement())
+  name     String
+  imgHappy String
+  imgSad   String
+  user     User[]
 psl=}
 
 entity DaBoiArmor {=psl
@@ -142,6 +149,11 @@ query fetchDaBoiArmor {
 
 query generateText {
   fn: import { generateText } from "@server/queries/generateText.js",
+}
+
+query getDaBoiSkin {
+  fn: import { getDaBoiSkin } from "@server/queries/daBoi.js",
+  entities: [ User, DaBoiSkin, DaBoiArmor]
 }
 
 action registerStep2 {
