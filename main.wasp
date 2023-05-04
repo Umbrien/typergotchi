@@ -138,6 +138,11 @@ query fetchDaBoiSkins {
   entities: [DaBoiSkin]
 }
 
+query fetchDaBoiArmor {
+  fn: import { getDaBoiArmor } from "@server/queries/daBoi.js",
+  entities: [DaBoiArmor]
+}
+
 query generateText {
   fn: import { generateText } from "@server/queries/generateText.js",
 }

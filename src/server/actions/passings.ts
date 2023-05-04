@@ -1,5 +1,4 @@
 import HttpError from "@wasp/core/HttpError.js";
-import { soloPassingContext } from "../_types";
 import { AddSoloPassing } from "@wasp/actions/types";
 import { SoloPassing } from "@wasp/entities";
 

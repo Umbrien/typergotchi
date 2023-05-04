@@ -8,9 +8,15 @@ import {
 import { User } from "@wasp/entities";
 
 export const registerStep2: RegisterStep2<
-  Pick<User, "nickname" | "description" | "daBoiSelectedSkinId">,
+  Pick<
+    User,
+    "nickname" | "description" | "daBoiSelectedSkinId" | "daBoiSelectedArmorId"
+  >,
   User
-> = async ({ nickname, description, daBoiSelectedSkinId }, context) => {
+> = async (
+  { nickname, description, daBoiSelectedSkinId, daBoiSelectedArmorId },
+  context
+) => {
   if (!context.user) {
     throw new HttpError(401);
   }
@@ -28,6 +34,7 @@ export const registerStep2: RegisterStep2<
       nickname,
       description,
       daBoiSelectedSkinId,
+      daBoiSelectedArmorId,
     },
   });
 };

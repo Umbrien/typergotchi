@@ -1,22 +1,25 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
+import useAuth from "@wasp/auth/useAuth";
 import { useQuery } from "@wasp/queries";
 import { useMutation } from "@tanstack/react-query";
 import fetchDaBoiSkins from "@wasp/queries/fetchDaBoiSkins";
+import fetchDaBoiArmor from "@wasp/queries/fetchDaBoiArmor";
 import registerStep2 from "@wasp/actions/registerStep2";
 import HttpError from "../../../../.wasp/out/server/src/core/HttpError";
 
 export function SignupStage2() {
   const history = useHistory();
+  const { data: user } = useAuth();
 
   const { data: daBoiSkins } = useQuery(fetchDaBoiSkins);
+  const { data: daBoiArmor } = useQuery(fetchDaBoiArmor, {
+    maxPrice: 15,
+  });
 
   const registerStep2Mutation = useMutation({
     mutationFn: registerStep2,
-    onSuccess: (user) => {
-      setIsNicknameUsed(false);
-      setNicknameError(false);
-      setSelectedSkinIdError(false);
+    onSuccess: () => {
       history.push("/");
     },
     onError: (err: HttpError) => {
@@ -29,15 +32,24 @@ export function SignupStage2() {
     },
   });
 
-  const [nickname, setNickname] = useState("");
+  const [nickname, setNickname] = useState(user?.nickname || "");
   const [nickNameError, setNicknameError] = useState(false);
-  const [bio, setBio] = useState("");
-  const [selectedSkinId, setSelectedSkinId] = useState<number | null>(null);
+  const [bio, setBio] = useState(user?.description || "");
+  const [selectedSkinId, setSelectedSkinId] = useState<number | null>(
+    user?.daBoiSelectedSkinId || null
+  );
   const [selectedSkinIdError, setSelectedSkinIdError] = useState(false);
+  const [selectedArmorId, setSelectedArmorId] = useState<number | null>(
+    user?.daBoiSelectedArmorId || null
+  );
   const [isNicknameUsed, setIsNicknameUsed] = useState(false);
 
   function handleSkinClick(skinId: number) {
     setSelectedSkinId((id) => (id === skinId ? null : skinId));
+  }
+
+  function handleArmorClick(armorId: number) {
+    setSelectedArmorId((id) => (id === armorId ? null : armorId));
   }
 
   async function handleFinishSignupClick() {
@@ -52,6 +64,7 @@ export function SignupStage2() {
         nickname,
         description: bio,
         daBoiSelectedSkinId: selectedSkinId,
+        daBoiSelectedArmorId: selectedArmorId,
       });
     }
   }
@@ -127,6 +140,28 @@ export function SignupStage2() {
                       } transition hover:rounded-xl hover:bg-yellow-50 active:bg-yellow-100`}
                       key={`daboi-skin-${id}`}
                       onClick={() => handleSkinClick(id)}
+                    >
+                      <img src={img} alt={name} />
+                      <span className="ml-2">{name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {daBoiArmor && (
+              <div className="my-4 flex flex-col">
+                <span className="self-center text-gray-700">
+                  ... and his armor
+                </span>
+                <div className="my-3 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
+                  {daBoiArmor.map(({ id, img, name }) => (
+                    <div
+                      className={`flex flex-col items-center rounded-md border border-yellow-400 p-3 ${
+                        selectedArmorId === id ? "bg-yellow-50" : ""
+                      } transition hover:rounded-xl hover:bg-yellow-50 active:bg-yellow-100`}
+                      key={`daboi-armor-${id}`}
+                      onClick={() => handleArmorClick(id)}
                     >
                       <img src={img} alt={name} />
                       <span className="ml-2">{name}</span>
