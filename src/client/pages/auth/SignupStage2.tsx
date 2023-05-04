@@ -1,19 +1,40 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useQuery } from "@wasp/queries";
+import { useMutation } from "@tanstack/react-query";
 import fetchDaBoiSkins from "@wasp/queries/fetchDaBoiSkins";
 import registerStep2 from "@wasp/actions/registerStep2";
+import HttpError from "../../../../.wasp/out/server/src/core/HttpError";
 
 export function SignupStage2() {
   const history = useHistory();
 
   const { data: daBoiSkins } = useQuery(fetchDaBoiSkins);
 
+  const registerStep2Mutation = useMutation({
+    mutationFn: registerStep2,
+    onSuccess: (user) => {
+      setIsNicknameUsed(false);
+      setNicknameError(false);
+      setSelectedSkinIdError(false);
+      history.push("/");
+    },
+    onError: (err: HttpError) => {
+      if (err.statusCode === 409) {
+        setNicknameError(false);
+        setIsNicknameUsed(true);
+      } else {
+        throw err;
+      }
+    },
+  });
+
   const [nickname, setNickname] = useState("");
   const [nickNameError, setNicknameError] = useState(false);
   const [bio, setBio] = useState("");
   const [selectedSkinId, setSelectedSkinId] = useState<number | null>(null);
   const [selectedSkinIdError, setSelectedSkinIdError] = useState(false);
+  const [isNicknameUsed, setIsNicknameUsed] = useState(false);
 
   function handleSkinClick(skinId: number) {
     setSelectedSkinId((id) => (id === skinId ? null : skinId));
@@ -27,18 +48,11 @@ export function SignupStage2() {
     setSelectedSkinIdError(!selectedSkinIdIsValid);
 
     if (nickNameIsValid && selectedSkinIdIsValid) {
-      console.log(nickname, bio, selectedSkinId);
-      try {
-        const user = await registerStep2({
-          nickname,
-          bio,
-          daBoiSelectedSkinId: selectedSkinId,
-        });
-        console.log(user);
-      } catch (err) {
-        console.log(err);
-      }
-      history.push("/");
+      registerStep2Mutation.mutate({
+        nickname,
+        description: bio,
+        daBoiSelectedSkinId: selectedSkinId,
+      });
     }
   }
 
@@ -68,6 +82,11 @@ export function SignupStage2() {
               {nickNameError && (
                 <span className="text-sm text-red-700">
                   Come on, fill in cool nickname
+                </span>
+              )}
+              {isNicknameUsed && (
+                <span className="text-sm text-red-700">
+                  This nickname is already used
                 </span>
               )}
             </label>

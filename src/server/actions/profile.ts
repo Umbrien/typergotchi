@@ -1,32 +1,24 @@
 import HttpError from "@wasp/core/HttpError.js";
-import { Context, inventoryContext } from "../_types";
 import {
+  RegisterStep2,
   ChangeNickname,
   SetDaBoiSkin,
   SetDaBoiArmor,
 } from "@wasp/actions/types";
-import { Inventory, SoloPassing, User } from "@wasp/entities";
+import { User } from "@wasp/entities";
 
-export async function registerStep2(
-  {
-    nickname,
-    bio,
-    daBoiSelectedSkinId,
-  }: {
-    nickname: string;
-    bio?: string;
-    daBoiSelectedSkinId: number;
-  },
-  context: Context
-) {
+export const registerStep2: RegisterStep2<
+  Pick<User, "nickname" | "description" | "daBoiSelectedSkinId">,
+  User
+> = async ({ nickname, description, daBoiSelectedSkinId }, context) => {
   if (!context.user) {
     throw new HttpError(401);
   }
 
-  const nicknameIsUsed = await context.entities.User.findUnique({
-    where: { nickname },
+  const userWithUsedNickname = await context.entities.User.findUnique({
+    where: { nickname: nickname ?? undefined },
   });
-  if (nicknameIsUsed) {
+  if (userWithUsedNickname && userWithUsedNickname.id !== context.user.id) {
     throw new HttpError(409);
   }
 
@@ -34,11 +26,11 @@ export async function registerStep2(
     where: { id: context.user.id },
     data: {
       nickname,
-      description: bio,
+      description,
       daBoiSelectedSkinId,
     },
   });
-}
+};
 
 export const changeNickname: ChangeNickname<
   Pick<User, "nickname">,
@@ -47,10 +39,10 @@ export const changeNickname: ChangeNickname<
   if (!context.user) {
     throw new HttpError(401);
   }
-  const nicknameUsed = await context.entities.User.findUnique({
+  const userWithUsedNickname = await context.entities.User.findUnique({
     where: { nickname: nickname ?? undefined },
   });
-  if (nicknameUsed) {
+  if (userWithUsedNickname && userWithUsedNickname.id !== context.user.id) {
     throw new HttpError(409);
   }
   return context.entities.User.update({
