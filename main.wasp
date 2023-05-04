@@ -92,11 +92,6 @@ entity Inventory {=psl
 psl=}
 
 
-query fetchDaBoiSkins {
-  fn: import { getDaBoiSkins } from "@server/queries/daBoi.js",
-  entities: [DaBoiSkin]
-}
-
 route RootRoute { path: "/", to: MainPage }
 page MainPage {
   component: import Main from "@client/MainPage.jsx"
@@ -137,8 +132,18 @@ page SoloModePage {
   component: import { SoloMode } from "@client/pages/soloMode.tsx",
 }
 
+query fetchDaBoiSkins {
+  fn: import { getDaBoiSkins } from "@server/queries/daBoi.js",
+  entities: [DaBoiSkin]
+}
+
 query generateText {
   fn: import { generateText } from "@server/queries/generateText.js",
+}
+
+action registerStep2 {
+  fn: import { registerStep2 } from "@server/actions/profile.js",
+  entities: [User]
 }
 
 action addSoloPassing {
