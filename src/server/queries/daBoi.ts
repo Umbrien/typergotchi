@@ -1,4 +1,8 @@
-import { FetchDaBoiSkins, FetchDaBoiArmor } from "@wasp/queries/types";
+import {
+  FetchDaBoiSkins,
+  FetchDaBoiArmor,
+  GetDaBoiSkin,
+} from "@wasp/queries/types";
 import { DaBoiSkin, DaBoiArmor } from "@wasp/entities";
 
 export const getDaBoiSkins: FetchDaBoiSkins<Object, DaBoiSkin[]> = (
@@ -15,4 +19,8 @@ export const getDaBoiArmor: FetchDaBoiArmor<
   return context.entities.DaBoiArmor.findMany({
     where: { price: { lte: maxPrice } },
   });
+};
+
+export const getDaBoiSkin: GetDaBoiSkin<{}, string> = async ({}, context) => {
+  return "qq";
 };
