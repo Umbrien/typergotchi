@@ -19,3 +19,9 @@ export type soloPassingContext = Context & {
   };
 };
 
+export type inventoryContext = Context & {
+  entities: {
+    Inventory: Prisma.InventoryDelegate<{}>;
+  };
+};
+

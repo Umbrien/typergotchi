@@ -85,10 +85,11 @@ entity DaBoiArmor {=psl
 psl=}
 
 entity Inventory {=psl
-  id     Int          @id @default(autoincrement())
-  userId Int          @unique
-  user   User         @relation(fields: [userId], references: [id])
-  armor  DaBoiArmor[]
+  id      Int          @id @default(autoincrement())
+  userId  Int          @unique
+  user    User         @relation(fields: [userId], references: [id])
+  armorId Int          @unique
+  armor   DaBoiArmor   @relation(fields: [armorId], references: [id])
 psl=}
 
 
@@ -156,7 +157,17 @@ action changeNickname {
   entities: [User]
 }
 
-action changeDaBoiSkin {
-  fn: import { changeDaBoiSkin } from "@server/actions/profile.js",
+action setDaBoiSkin {
+  fn: import { setDaBoiSkin } from "@server/actions/profile.js",
   entities: [User]
+}
+
+action setDaBoiArmor {
+  fn: import { setDaBoiArmor } from "@server/actions/profile.js",
+  entities: [User, Inventory]
+}
+
+action buyDaBoiArmor {
+  fn: import { buyDaBoiArmor } from "@server/actions/shop.js",
+  entities: [User, Inventory, DaBoiArmor]
 }
