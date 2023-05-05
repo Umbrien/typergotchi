@@ -1,4 +1,5 @@
 import { wordList } from "../wordList.js";
+// @ts-ignore
 import { prng_alea } from "esm-seedrandom";
 
 const punctuationMarks = [".", ",", ":", ";", "!", "?"];
