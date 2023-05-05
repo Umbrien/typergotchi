@@ -9,7 +9,7 @@ app typergotchi {
       email: {
         fromField: {
           name: "Typergotchi",
-          email: "kalugin.serej@gmail.com",
+          email: "daboi@mail.typergotchi.win",
         },
         emailVerification: {
           clientRoute: EmailVerificationRoute,
@@ -28,7 +28,7 @@ app typergotchi {
     provider: SMTP,
     defaultFrom: {
         name: "Typergotchi",
-        email: "kalugin.serej@gmail.com"
+        email: "daboi@mail.typergotchi.win",
     },
   },
   db: {
