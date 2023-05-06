@@ -11,7 +11,7 @@ export const addSoloPassing: AddSoloPassing<
   }
   return context.entities.SoloPassing.create({
     data: {
-      cpm: cpm,
+      cpm,
       user: { connect: { id: context.user.id } },
     },
   });

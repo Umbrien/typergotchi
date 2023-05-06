@@ -42,7 +42,7 @@ export const Word = ({
   isCurrentWord,
 }: WordProps) => {
   return (
-    <span className={`${isCurrentWord ? "bg-yellow-300" : ""}`}>
+    <span className={`text-xl ${isCurrentWord ? "bg-yellow-300" : ""}`}>
       {word.split("").map((letter, i) => (
         <Letter
           key={i}

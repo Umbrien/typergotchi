@@ -1,6 +1,7 @@
 import { wordList } from "../wordList.js";
 // @ts-ignore
 import { prng_alea } from "esm-seedrandom";
+import type { generateTextProps } from "@wasp/shared/types.js";
 
 const punctuationMarks = [".", ",", ":", ";", "!", "?"];
 const chanceOfNumber = 1 / 12;
@@ -9,13 +10,6 @@ const chanceOfPunctuation = 1 / 8;
 const wordsPerSecond = 4.2;
 const maxNumber = 9999;
 
-type generateTextProps = {
-  includeNumbers?: boolean;
-  includeCapitalLetters?: boolean;
-  includePunctuationMarks?: boolean;
-  length: { words: number } | { seconds: number };
-  seed?: string;
-};
 export function generateText({
   includeNumbers = false,
   includeCapitalLetters = false,
