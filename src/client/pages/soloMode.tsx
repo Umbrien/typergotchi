@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SoloModeSession } from "../components/typer/SoloModeSession";
 import type { generateTextProps } from "@wasp/shared/types";
 import { useQuery } from "@wasp/queries";
@@ -37,6 +37,7 @@ export function SoloMode() {
     words: 50,
   });
   const [sessionStarted, setSessionStarted] = useState(false);
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
 
   const { data: text } = useQuery(
     generateText,
@@ -50,6 +51,10 @@ export function SoloMode() {
       refetchOnWindowFocus: false,
     }
   );
+
+  useEffect(() => {
+    setCurrentWordIndex(0);
+  }, [text]);
 
   function handleLengthVariantSelection(
     lengthVariant: generateTextProps["length"]
@@ -139,13 +144,15 @@ export function SoloMode() {
             <div className="text-md flex items-center gap-4">
               <div className="flex w-min gap-2">
                 <span className="text-yellow-700">1:30</span>
-                <span className="text-yellow-700">13/{text?.length}</span>
+                <span className="text-yellow-700">
+                  {currentWordIndex + 1}/{text?.length}
+                </span>
               </div>
               <span className="text-yellow-700">40 cpm</span>
             </div>
           </div>
         </div>
-        <SoloModeSession text={text} />
+        <SoloModeSession text={text} currentWordIndex={currentWordIndex} />
       </div>
     </div>
   );
