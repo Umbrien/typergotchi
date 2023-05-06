@@ -6,7 +6,7 @@ const daBoiImgHeight = 512;
 
 const S3 = new S3Client({
   region: "auto",
-  endpoint: process.env.R2_BUCKET_URL,
+  endpoint: process.env.R2_API_URL,
   credentials: {
     accessKeyId: process.env.R2_ACCESS_TOKEN!,
     secretAccessKey: process.env.R2_SECRET_TOKEN!,
@@ -21,7 +21,7 @@ export async function overlayImage(daBoiSkin: string, armor: string) {
   daBoiArmorImg = daBoiArmorImg.resize(daBoiImgWidth, daBoiImgHeight);
 
   const compositedImage = daBoiSkinImg.composite(daBoiArmorImg, 0, 0);
-  return await compositedImage.getBufferAsync(Jimp.MIME_PNG);
+  return await compositedImage.getBufferAsync(Jimp.MIME_JPEG);
 }
 
 export async function uploadImageToR2(imageArray: Buffer, filename: string) {
@@ -30,7 +30,7 @@ export async function uploadImageToR2(imageArray: Buffer, filename: string) {
       Bucket: "typergotchi",
       Key: filename,
       Body: imageArray,
-      ContentType: "image/png",
+      ContentType: "image/jpeg",
     })
   );
 }

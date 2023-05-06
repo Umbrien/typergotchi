@@ -20,14 +20,17 @@ export const buyDaBoiArmor: BuyDaBoiArmor<
   if (userHaveArmor != null) {
     throw new HttpError(401);
   }
-  const userMoney = await context.entities.User.findUniqueOrThrow({
+  const userMoney = await context.entities.User.findUnique({
     where: { id: context.user.id },
     select: { balance: true },
   });
-  const armorPrice = await context.entities.DaBoiArmor.findUniqueOrThrow({
+  const armorPrice = await context.entities.DaBoiArmor.findUnique({
     where: { id: daBoiArmorId },
     select: { price: true },
   });
+  if (!userMoney || !armorPrice) {
+    throw new HttpError(401);
+  }
   if (armorPrice.price > userMoney.balance) {
     throw new HttpError(401);
   }
