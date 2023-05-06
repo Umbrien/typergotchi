@@ -3,13 +3,14 @@ import { SoloModeSession } from "../components/typer/SoloModeSession";
 import type { generateTextProps } from "@wasp/shared/types";
 import { useQuery } from "@wasp/queries";
 import generateText from "@wasp/queries/generateText";
+import { IconAbc, IconClock } from "@tabler/icons-react";
 
 function HeaderSelectBtn({
-  label,
+  children,
   selected,
   onClick,
 }: {
-  label: string;
+  children: React.ReactNode;
   selected: boolean;
   onClick: () => void;
 }) {
@@ -20,12 +21,12 @@ function HeaderSelectBtn({
         selected ? "bg-yellow-200" : "bg-transparent"
       }`}
     >
-      {label}
+      {children}
     </button>
   );
 }
 
-const wordsLengths = [10, 50, 100, 150, 200, 250];
+const wordsLengths = [10, 50, 100, 200, 250];
 const secondsLengths = [30, 60, 60 * 2, 60 * 5];
 
 export function SoloMode() {
@@ -49,56 +50,100 @@ export function SoloMode() {
       refetchOnWindowFocus: false,
     }
   );
+
+  function handleLengthVariantSelection(
+    lengthVariant: generateTextProps["length"]
+  ) {
+    if ("words" in length && "seconds" in lengthVariant) {
+      setLength(lengthVariant);
+    }
+    if ("seconds" in length && "words" in lengthVariant) {
+      setLength(lengthVariant);
+    }
+  }
+
   return (
     <div className="flex h-screen flex-col justify-center">
       <div className="flex w-[56rem] flex-col self-center rounded-xl bg-yellow-100">
-        <div className="flex items-center justify-between p-3">
-          <h1>🐝 Solo mode</h1>
-          <div className="flex w-min gap-2">
-            <HeaderSelectBtn
-              label="Aa"
-              selected={includeCapitalLetters}
-              onClick={() => setIncludeCapitalLetters((i) => !i)}
-            />
-            <HeaderSelectBtn
-              label="123"
-              selected={includeNumbers}
-              onClick={() => setIncludeNumbers((i) => !i)}
-            />
-            <HeaderSelectBtn
-              label="!?"
-              selected={includePunctuationMarks}
-              onClick={() => setIncludePunctuationMarks((i) => !i)}
-            />
-          </div>
-
-          <div className="h-8 w-px bg-yellow-200" />
-
-          <div className="flex w-min gap-2">
-            {"words" in length &&
-              wordsLengths.map((l) => (
+        <div className="flex items-center justify-between gap-8 p-3">
+          <h1 className="whitespace-nowrap">🐝 Solo mode</h1>
+          <div className="flex w-full justify-between">
+            <div className="flex w-min items-center gap-2">
+              <div className="flex w-min gap-2">
                 <HeaderSelectBtn
-                  key={`length-words-${l}`}
-                  label={l.toString()}
-                  selected={length.words === l}
-                  onClick={() => setLength({ words: l })}
-                />
-              ))}
-            {"seconds" in length &&
-              secondsLengths.map((l) => (
+                  selected={includeCapitalLetters}
+                  onClick={() => setIncludeCapitalLetters((i) => !i)}
+                >
+                  Aa
+                </HeaderSelectBtn>
                 <HeaderSelectBtn
-                  key={`length-seconds-${l}`}
-                  label={l.toString()}
-                  selected={length.seconds === l}
-                  onClick={() => setLength({ seconds: l })}
-                />
-              ))}
+                  selected={includeNumbers}
+                  onClick={() => setIncludeNumbers((i) => !i)}
+                >
+                  123
+                </HeaderSelectBtn>
+                <HeaderSelectBtn
+                  selected={includePunctuationMarks}
+                  onClick={() => setIncludePunctuationMarks((i) => !i)}
+                >
+                  !?
+                </HeaderSelectBtn>
+              </div>
+
+              <div className="h-8 w-px bg-yellow-200" />
+
+              <div className="flex w-min gap-2 rounded border border-yellow-300 p-2">
+                <HeaderSelectBtn
+                  selected={"words" in length}
+                  onClick={() =>
+                    handleLengthVariantSelection({
+                      words: 50,
+                    })
+                  }
+                >
+                  <IconAbc className="" size={16} />
+                </HeaderSelectBtn>
+                <HeaderSelectBtn
+                  selected={"seconds" in length}
+                  onClick={() =>
+                    handleLengthVariantSelection({
+                      seconds: 60,
+                    })
+                  }
+                >
+                  <IconClock className="" size={16} />
+                </HeaderSelectBtn>
+                <div className="h-8 w-px bg-yellow-200" />
+                {"words" in length &&
+                  wordsLengths.map((l) => (
+                    <HeaderSelectBtn
+                      key={`length-words-${l}`}
+                      selected={length.words === l}
+                      onClick={() => setLength({ words: l })}
+                    >
+                      {l.toString()}
+                    </HeaderSelectBtn>
+                  ))}
+                {"seconds" in length &&
+                  secondsLengths.map((l) => (
+                    <HeaderSelectBtn
+                      key={`length-seconds-${l}`}
+                      selected={length.seconds === l}
+                      onClick={() => setLength({ seconds: l })}
+                    >
+                      {l.toString()}
+                    </HeaderSelectBtn>
+                  ))}
+              </div>
+            </div>
+            <div className="text-md flex items-center gap-4">
+              <div className="flex w-min gap-2">
+                <span className="text-yellow-700">1:30</span>
+                <span className="text-yellow-700">13/{text?.length}</span>
+              </div>
+              <span className="text-yellow-700">40 cpm</span>
+            </div>
           </div>
-          <div className="flex w-min gap-2">
-            <span className="text-sm text-yellow-700">1:30</span>
-            <span className="text-sm text-yellow-700">13/{text?.length}</span>
-          </div>
-          <span className="text-sm text-yellow-700">40 cpm</span>
         </div>
         <SoloModeSession text={text} />
       </div>
