@@ -40,6 +40,7 @@ app typergotchi {
     ("@tailwindcss/forms", "^0.5.3"),
     ("esm-seedrandom", "3.0.5"),
     ("@aws-sdk/client-s3", "3.295.0"),
+    ("node-fetch", "3.3.1"),
     ("jimp", "0.22.7")
   ]
 }
@@ -152,8 +153,8 @@ query generateText {
   fn: import { generateText } from "@server/queries/generateText.js",
 }
 
-query getDaBoiSkin {
-  fn: import { getDaBoiSkin } from "@server/queries/daBoi.js",
+query getDaBoiImgUrls {
+  fn: import { getDaBoiImgUrls } from "@server/queries/daBoi.js",
   entities: [ User, DaBoiSkin, DaBoiArmor]
 }
 
