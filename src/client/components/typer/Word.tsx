@@ -1,4 +1,4 @@
-type LetterState = "correct" | "incorrect" | "not-typed";
+import type { LetterState } from "../../types/session";
 
 type LetterProps = {
   letter: string;
