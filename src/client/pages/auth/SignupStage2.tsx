@@ -8,6 +8,8 @@ import fetchDaBoiArmor from "@wasp/queries/fetchDaBoiArmor";
 import registerStep2 from "@wasp/actions/registerStep2";
 import HttpError from "../../../../.wasp/out/server/src/core/HttpError";
 
+const bucketUrl = "https://r2.typergotchi.win/typergotchi/";
+
 export function SignupStage2() {
   const history = useHistory();
   const { data: user } = useAuth();
@@ -141,7 +143,7 @@ export function SignupStage2() {
                       key={`daboi-skin-${id}`}
                       onClick={() => handleSkinClick(id)}
                     >
-                      <img src={img} alt={name} />
+                      <img src={bucketUrl + img} alt={name} />
                       <span className="ml-2">{name}</span>
                     </div>
                   ))}
@@ -163,7 +165,7 @@ export function SignupStage2() {
                       key={`daboi-armor-${id}`}
                       onClick={() => handleArmorClick(id)}
                     >
-                      <img src={img} alt={name} />
+                      <img src={bucketUrl + img} alt={name} />
                       <span className="ml-2">{name}</span>
                     </div>
                   ))}
