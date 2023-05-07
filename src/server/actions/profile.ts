@@ -7,7 +7,6 @@ import {
 } from "@wasp/actions/types";
 import { User } from "@wasp/entities";
 import { getDaBoiImgUrls } from "../getDaBoiImgUrls.js";
-import { getDaBoiSkins } from "../queries/daBoi";
 
 export const registerStep2: RegisterStep2<
   Pick<
@@ -19,10 +18,9 @@ export const registerStep2: RegisterStep2<
   { nickname, description, daBoiSelectedSkinId, daBoiSelectedArmorId },
   context
 ) => {
-  if (!context.user) {
+  if (!context.user || !daBoiSelectedSkinId) {
     throw new HttpError(401);
   }
-
   const userWithUsedNickname = await context.entities.User.findUnique({
     where: { nickname: nickname ?? undefined },
   });
@@ -31,7 +29,7 @@ export const registerStep2: RegisterStep2<
   }
   const [daBoiHappyImg, daBoiSadImg] = await getDaBoiImgUrls(
     daBoiSelectedSkinId,
-    daBoiSelectedArmorId
+    daBoiSelectedArmorId ?? undefined
   );
 
   return context.entities.User.update({
@@ -72,13 +70,20 @@ export const setDaBoiSkin: SetDaBoiSkin<
   Pick<User, "daBoiSelectedSkinId">,
   User
 > = async ({ daBoiSelectedSkinId }, context) => {
-  if (!context.user) {
+  if (!context.user || !daBoiSelectedSkinId) {
     throw new HttpError(401);
   }
+  const daBoiSelectedArmorId = context.user.daBoiSelectedArmorId;
+  const [daBoiHappyImg, daBoiSadImg] = await getDaBoiImgUrls(
+    daBoiSelectedSkinId,
+    daBoiSelectedArmorId ?? undefined
+  );
   return context.entities.User.update({
     where: { id: context.user.id },
     data: {
-      daBoiSelectedSkinId: daBoiSelectedSkinId,
+      daBoiSelectedSkinId,
+      daBoiHappyImg,
+      daBoiSadImg,
     },
   });
 };
@@ -99,10 +104,19 @@ export const setDaBoiArmor: SetDaBoiArmor<
   if (!userHaveSkin) {
     throw new HttpError(409);
   }
+  if (!context.user.daBoiSelectedSkinId) {
+    throw new HttpError(401);
+  }
+  const [daBoiHappyImg, daBoiSadImg] = await getDaBoiImgUrls(
+    context.user.daBoiSelectedSkinId,
+    daBoiSelectedArmorId ?? undefined
+  );
   return context.entities.User.update({
     where: { id: context.user.id },
     data: {
       daBoiSelectedArmorId,
+      daBoiHappyImg,
+      daBoiSadImg,
     },
   });
 };
