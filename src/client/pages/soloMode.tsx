@@ -3,6 +3,8 @@ import { SoloModeSession } from "../components/typer/SoloModeSession";
 import type { generateTextProps } from "@wasp/shared/types";
 import { useQuery } from "@wasp/queries";
 import generateText from "@wasp/queries/generateText";
+import useAuth from "@wasp/auth/useAuth";
+import AddSoloPassing from "@wasp/actions/addSoloPassing";
 import { IconAbc, IconClock } from "@tabler/icons-react";
 import { useKeyPress } from "../hooks/useKeyPress";
 import { useSessionStore } from "../store/store";
@@ -33,6 +35,8 @@ const wordsLengths = [10, 50, 100, 200, 250];
 const secondsLengths = [30, 60, 60 * 2, 60 * 5, 60 * 10];
 
 export function SoloMode() {
+  const { data: user } = useAuth();
+
   const [includeCapitalLetters, setIncludeCapitalLetters] = useState(false);
   const [includeNumbers, setIncludeNumbers] = useState(false);
   const [includePunctuationMarks, setIncludePunctuationMarks] = useState(false);
@@ -86,7 +90,12 @@ export function SoloMode() {
     if (session.isSessionFinished) {
       setIsSessionActive(false);
       clearInterval(interval.current);
-      console.log("session finished");
+
+      if (user) {
+        AddSoloPassing({ cpm });
+      } else {
+        alert("Please log in to save your results.");
+      }
     }
   }, [session.isSessionFinished]);
 
@@ -206,7 +215,21 @@ export function SoloMode() {
           words={session.words}
           currentWordIndex={session.currentWordIndex}
         />
-        {session.isSessionFinished && <div>finished</div>}
+        {session.isSessionFinished && (
+          <div>
+            {user ? (
+              "Results saved!"
+            ) : (
+              <p>
+                Please{" "}
+                <a className="underline" href="/login">
+                  log in
+                </a>{" "}
+                to save your results
+              </p>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
