@@ -1,5 +1,6 @@
 import Jimp from "jimp";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { bucketUrl } from "@wasp/shared/constants.js";
 
 const daBoiImgWidth = 512;
 const daBoiImgHeight = 512;
@@ -21,7 +22,7 @@ export async function overlayImage(daBoiSkin: string, armor: string) {
   daBoiArmorImg = daBoiArmorImg.resize(daBoiImgWidth, daBoiImgHeight);
 
   const compositedImage = daBoiSkinImg.composite(daBoiArmorImg, 0, 0);
-  return await compositedImage.getBufferAsync(Jimp.MIME_JPEG);
+  return compositedImage.getBufferAsync(Jimp.MIME_PNG);
 }
 
 export async function uploadImageToR2(imageArray: Buffer, filename: string) {
@@ -30,15 +31,23 @@ export async function uploadImageToR2(imageArray: Buffer, filename: string) {
       Bucket: "typergotchi",
       Key: filename,
       Body: imageArray,
-      ContentType: "image/jpeg",
+      ContentType: "image/png",
     })
   );
 }
 
-export async function generateImage(
-  daBoiSkin: string,
-  armor: string,
-  filename: string
-) {
-  uploadImageToR2(await overlayImage(daBoiSkin, armor), filename);
+export async function generateImage({
+  daBoiSkinImg,
+  daBoiArmorImg,
+  daBoiFilename,
+}: {
+  daBoiSkinImg: string;
+  daBoiArmorImg: string;
+  daBoiFilename: string;
+}) {
+  const overlayedImage = await overlayImage(
+    bucketUrl + daBoiSkinImg,
+    bucketUrl + daBoiArmorImg
+  );
+  await uploadImageToR2(overlayedImage, daBoiFilename);
 }

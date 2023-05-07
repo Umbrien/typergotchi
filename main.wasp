@@ -154,11 +154,6 @@ query generateText {
   fn: import { generateText } from "@server/queries/generateText.js",
 }
 
-query getDaBoiImgUrls {
-  fn: import { getDaBoiImgUrls } from "@server/queries/daBoi.js",
-  entities: [ User, DaBoiSkin, DaBoiArmor]
-}
-
 action registerStep2 {
   fn: import { registerStep2 } from "@server/actions/profile.js",
   entities: [User]

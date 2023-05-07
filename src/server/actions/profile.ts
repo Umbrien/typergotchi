@@ -6,6 +6,8 @@ import {
   SetDaBoiArmor,
 } from "@wasp/actions/types";
 import { User } from "@wasp/entities";
+import { getDaBoiImgUrls } from "../getDaBoiImgUrls.js";
+import { getDaBoiSkins } from "../queries/daBoi";
 
 export const registerStep2: RegisterStep2<
   Pick<
@@ -27,6 +29,10 @@ export const registerStep2: RegisterStep2<
   if (userWithUsedNickname && userWithUsedNickname.id !== context.user.id) {
     throw new HttpError(409);
   }
+  const [daBoiHappyImg, daBoiSadImg] = await getDaBoiImgUrls(
+    daBoiSelectedSkinId,
+    daBoiSelectedArmorId
+  );
 
   return context.entities.User.update({
     where: { id: context.user.id },
@@ -35,6 +41,8 @@ export const registerStep2: RegisterStep2<
       description,
       daBoiSelectedSkinId,
       daBoiSelectedArmorId,
+      daBoiHappyImg,
+      daBoiSadImg,
     },
   });
 };

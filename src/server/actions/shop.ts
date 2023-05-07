@@ -1,8 +1,7 @@
 import HttpError from "@wasp/core/HttpError.js";
 import { BuyDaBoiArmor } from "@wasp/actions/types";
 import { User, Inventory, DaBoiArmor } from "@wasp/entities";
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import prismaClient from "@wasp/dbClient.js";
 
 export const buyDaBoiArmor: BuyDaBoiArmor<
   Pick<DaBoiArmor, "id">,
@@ -35,14 +34,14 @@ export const buyDaBoiArmor: BuyDaBoiArmor<
     throw new HttpError(401);
   }
 
-  return prisma.$transaction([
-    prisma.inventory.create({
+  return prismaClient.$transaction([
+    prismaClient.inventory.create({
       data: {
         userId: context.user.id,
         armorId: daBoiArmorId,
       },
     }),
-    prisma.user.update({
+    prismaClient.user.update({
       where: { id: context.user.id },
       data: { balance: { decrement: armorPrice.price } },
     }),
