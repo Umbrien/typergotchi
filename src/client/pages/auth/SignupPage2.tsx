@@ -6,36 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import fetchDaBoiSkins from "@wasp/queries/fetchDaBoiSkins";
 import fetchDaBoiArmor from "@wasp/queries/fetchDaBoiArmor";
 import registerStep2 from "@wasp/actions/registerStep2";
-
-class HttpError extends Error {
-  public statusCode: number;
-  public data?: any;
-  constructor(
-    statusCode: number,
-    message: string,
-    data?: any,
-    ...params: any[]
-  ) {
-    super(message, ...params);
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, HttpError);
-    }
-
-    this.name = this.constructor.name;
-
-    if (
-      !(Number.isInteger(statusCode) && statusCode >= 400 && statusCode < 600)
-    ) {
-      throw new Error("statusCode has to be integer in range [400, 600).");
-    }
-
-    this.statusCode = statusCode;
-
-    if (data) {
-      this.data = data;
-    }
-  }
-}
+import HttpError from "../../../../.wasp/out/server/src/core/HttpError";
 
 export function SignupStage2() {
   const history = useHistory();
