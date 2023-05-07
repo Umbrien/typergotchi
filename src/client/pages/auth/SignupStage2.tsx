@@ -6,7 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import fetchDaBoiSkins from "@wasp/queries/fetchDaBoiSkins";
 import fetchDaBoiArmor from "@wasp/queries/fetchDaBoiArmor";
 import registerStep2 from "@wasp/actions/registerStep2";
-import HttpError from "../../../../.wasp/out/server/src/core/HttpError";
+import { HttpError } from "../../types/httpTypes";
 
 export function SignupStage2() {
   const history = useHistory();
