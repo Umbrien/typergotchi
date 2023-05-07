@@ -33,6 +33,10 @@ app typergotchi {
   },
   db: {
     system: PostgreSQL,
+    seeds: [
+      import { seedDaBoiSkins } from "@server/dbSeeds.js",
+      import { seedDaBoiArmors } from "@server/dbSeeds.js"
+    ],
   },
 
   dependencies: [
