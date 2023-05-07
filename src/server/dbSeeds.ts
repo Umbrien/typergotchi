@@ -1,7 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 
 export async function seedDaBoiSkins(prismaClient: PrismaClient) {
-  /*console.log("sdkj");
   const daBoiFolder = "preboiz/";
   await prismaClient.daBoiSkin.createMany({
     data: [
@@ -21,7 +20,7 @@ export async function seedDaBoiSkins(prismaClient: PrismaClient) {
         imgSad: daBoiFolder + "green_sad.png",
       },
     ],
-  });*/
+  });
 }
 
 export async function seedDaBoiArmors(prismaClient: PrismaClient) {
@@ -42,6 +41,31 @@ export async function seedDaBoiArmors(prismaClient: PrismaClient) {
         name: "Top hat",
         price: 8,
         img: armorFolder + "gentleboi.png",
+      },
+      {
+        name: "Wmelon",
+        price: 50,
+        img: armorFolder + "wmelon.png",
+      },
+      {
+        name: "Paper",
+        price: 20,
+        img: armorFolder + "paper.png",
+      },
+      {
+        name: "Jester",
+        price: 25,
+        img: armorFolder + "jester.png",
+      },
+      {
+        name: "Kid hat",
+        price: 18,
+        img: armorFolder + "kid.png",
+      },
+      {
+        name: "Wcrop",
+        price: 35,
+        img: armorFolder + "wcorp.png",
       },
     ],
   });
