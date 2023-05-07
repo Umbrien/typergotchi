@@ -4,6 +4,8 @@ import type { generateTextProps } from "@wasp/shared/types";
 import { useQuery } from "@wasp/queries";
 import generateText from "@wasp/queries/generateText";
 import { IconAbc, IconClock } from "@tabler/icons-react";
+import { useKeyPress } from "../hooks/useKeyPress";
+import { useSessionStore } from "../store/store";
 
 function HeaderSelectBtn({
   children,
@@ -36,8 +38,8 @@ export function SoloMode() {
   const [length, setLength] = useState<generateTextProps["length"]>({
     words: 50,
   });
-  const [sessionStarted, setSessionStarted] = useState(false);
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+
+  const session = useSessionStore();
 
   const { data: text } = useQuery(
     generateText,
@@ -53,7 +55,9 @@ export function SoloMode() {
   );
 
   useEffect(() => {
-    setCurrentWordIndex(0);
+    if (text) {
+      session.seedWordsWithText(text);
+    }
   }, [text]);
 
   function handleLengthVariantSelection(
@@ -66,6 +70,14 @@ export function SoloMode() {
       setLength(lengthVariant);
     }
   }
+
+  const { key, code, timeStamp } = useKeyPress();
+
+  useEffect(() => {
+    if (key && !session.isSessionFinished) {
+      session.reactToKeyPress({ key, code });
+    }
+  }, [timeStamp]);
 
   return (
     <div className="flex h-screen flex-col justify-center">
@@ -145,14 +157,29 @@ export function SoloMode() {
               <div className="flex w-min gap-2">
                 <span className="text-yellow-700">1:30</span>
                 <span className="text-yellow-700">
-                  {currentWordIndex + 1}/{text?.length}
+                  {session.currentWordIndex + 1}/{text?.length}
                 </span>
               </div>
               <span className="text-yellow-700">40 cpm</span>
             </div>
           </div>
         </div>
-        <SoloModeSession text={text} currentWordIndex={currentWordIndex} />
+        <SoloModeSession
+          text={text}
+          currentWordIndex={session.currentWordIndex}
+        />
+        {session.words.map((letter, i) => (
+          <p key={`worddd-${i}`}>
+            {letter.word}:<br />
+            {letter.letterStatuses.map((letterStatus, j) => (
+              <span key={`lettter-${i}-${j}`}>
+                ({letterStatus.letter}/{letterStatus.status})
+              </span>
+            ))}
+            <br />
+          </p>
+        ))}
+        {session.isSessionFinished && <div>finished</div>}
       </div>
     </div>
   );
