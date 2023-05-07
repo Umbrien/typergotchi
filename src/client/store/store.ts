@@ -19,6 +19,7 @@ export type SessionState = {
   prevWord: () => void;
   prevLetter: () => void;
   reactToKeyPress: ({ key, code }: { key: string; code: string }) => void;
+  finishSession: () => void;
 };
 
 export const useSessionStore = create<SessionState>((set) => ({
@@ -162,6 +163,12 @@ export const useSessionStore = create<SessionState>((set) => ({
         state.isSessionFinished = true;
       }
 
+      return { ...state };
+    });
+  },
+  finishSession: () => {
+    set((state) => {
+      state.isSessionFinished = true;
       return { ...state };
     });
   },

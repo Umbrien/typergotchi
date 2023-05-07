@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { SoloModeSession } from "../components/typer/SoloModeSession";
 import type { generateTextProps } from "@wasp/shared/types";
 import { useQuery } from "@wasp/queries";
@@ -6,6 +6,7 @@ import generateText from "@wasp/queries/generateText";
 import { IconAbc, IconClock } from "@tabler/icons-react";
 import { useKeyPress } from "../hooks/useKeyPress";
 import { useSessionStore } from "../store/store";
+import { secondsPretty, secondsToTimeString } from "../utils/session";
 
 function HeaderSelectBtn({
   children,
@@ -29,7 +30,7 @@ function HeaderSelectBtn({
 }
 
 const wordsLengths = [10, 50, 100, 200, 250];
-const secondsLengths = [30, 60, 60 * 2, 60 * 5];
+const secondsLengths = [30, 60, 60 * 2, 60 * 5, 60 * 10];
 
 export function SoloMode() {
   const [includeCapitalLetters, setIncludeCapitalLetters] = useState(false);
@@ -38,6 +39,9 @@ export function SoloMode() {
   const [length, setLength] = useState<generateTextProps["length"]>({
     words: 50,
   });
+  const [isSessionActive, setIsSessionActive] = useState(false);
+  const [seconds, setSeconds] = useState(0);
+  const [cpm, setCpm] = useState(0);
 
   const session = useSessionStore();
 
@@ -56,6 +60,11 @@ export function SoloMode() {
 
   useEffect(() => {
     if (text) {
+      setSeconds(0);
+      setCpm(0);
+      clearInterval(interval.current);
+      setIsSessionActive(false);
+      session.finishSession();
       session.seedWordsWithText(text);
     }
   }, [text]);
@@ -74,10 +83,37 @@ export function SoloMode() {
   const { key, code, timeStamp } = useKeyPress();
 
   useEffect(() => {
+    if (session.isSessionFinished) {
+      setIsSessionActive(false);
+      clearInterval(interval.current);
+      console.log("session finished");
+    }
+  }, [session.isSessionFinished]);
+
+  useEffect(() => {
     if (key && !session.isSessionFinished) {
       session.reactToKeyPress({ key, code });
+      setIsSessionActive(true);
     }
   }, [timeStamp]);
+
+  const interval = useRef<NodeJS.Timer>();
+  useEffect(() => {
+    if (isSessionActive) {
+      interval.current = setInterval(() => {
+        setSeconds((s) => s + 1);
+      }, 1000);
+      return () => clearInterval(interval.current);
+    } else {
+      setSeconds(0);
+      setCpm(0);
+    }
+  }, [isSessionActive]);
+
+  useEffect(() => {
+    const cpm = Math.round((session.currentWordIndex / (seconds / 60)) * 100);
+    setCpm(cpm);
+  }, [session.currentWordIndex]);
 
   return (
     <div className="flex h-screen flex-col justify-center">
@@ -148,19 +184,21 @@ export function SoloMode() {
                       selected={length.seconds === l}
                       onClick={() => setLength({ seconds: l })}
                     >
-                      {l.toString()}
+                      {secondsPretty(l)}
                     </HeaderSelectBtn>
                   ))}
               </div>
             </div>
             <div className="text-md flex items-center gap-4">
               <div className="flex w-min gap-2">
-                <span className="text-yellow-700">1:30</span>
+                <span className="text-yellow-700">
+                  {secondsToTimeString(seconds)}
+                </span>
                 <span className="text-yellow-700">
                   {session.currentWordIndex + 1}/{text?.length}
                 </span>
               </div>
-              <span className="text-yellow-700">40 cpm</span>
+              <span className="text-yellow-700">{cpm || 0} cpm</span>
             </div>
           </div>
         </div>

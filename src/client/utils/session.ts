@@ -1,3 +1,18 @@
+export function secondsPretty(seconds: number) {
+  if (seconds < 60) {
+    return `${seconds}s`;
+  } else {
+    return `${Math.floor(seconds / 60)}m`;
+  }
+}
+
+export function secondsToTimeString(seconds: number) {
+  const minutes = Math.floor(seconds / 60);
+  const secondsLeft = seconds % 60;
+  const secondsString = secondsLeft < 10 ? `0${secondsLeft}` : `${secondsLeft}`;
+  return `${minutes}:${secondsString}`;
+}
+
 export function isKeyNonTypeable(key: string) {
   // excluding Space and Backspace since they are used for typing
   return (
