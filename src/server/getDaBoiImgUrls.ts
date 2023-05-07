@@ -4,7 +4,6 @@ import fetch from "node-fetch";
 import HttpError from "@wasp/core/HttpError.js";
 import prismaClient from "@wasp/dbClient.js";
 import { User } from "@wasp/entities";
-import { Prisma } from "@prisma/client";
 
 export async function getDaBoiImgUrls(skinId: number, armorId?: number) {
   async function getDaBoiSkinUrls() {
