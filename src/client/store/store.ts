@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { LetterState } from "../types/session";
 import { isKeyNonTypeable } from "../utils/session";
 
-type SessionState = {
+export type SessionState = {
   currentWordIndex: number;
   currentLetterIndex: number;
   isSessionFinished: boolean;

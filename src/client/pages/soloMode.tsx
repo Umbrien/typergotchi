@@ -165,20 +165,9 @@ export function SoloMode() {
           </div>
         </div>
         <SoloModeSession
-          text={text}
+          words={session.words}
           currentWordIndex={session.currentWordIndex}
         />
-        {session.words.map((letter, i) => (
-          <p key={`worddd-${i}`}>
-            {letter.word}:<br />
-            {letter.letterStatuses.map((letterStatus, j) => (
-              <span key={`lettter-${i}-${j}`}>
-                ({letterStatus.letter}/{letterStatus.status})
-              </span>
-            ))}
-            <br />
-          </p>
-        ))}
         {session.isSessionFinished && <div>finished</div>}
       </div>
     </div>

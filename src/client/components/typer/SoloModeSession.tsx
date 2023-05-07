@@ -1,12 +1,13 @@
 import { Word } from "./Word";
+import type { SessionState } from "../../store/store";
 
 const wordsPerBlock = 50;
 
 export function SoloModeSession({
-  text,
+  words,
   currentWordIndex,
 }: {
-  text?: string[];
+  words: SessionState["words"];
   currentWordIndex: number;
 }) {
   const blockStart =
@@ -15,15 +16,13 @@ export function SoloModeSession({
 
   return (
     <div className="flex-start flex h-48 flex-wrap items-start gap-2 rounded-xl bg-yellow-200 p-3">
-      {text ? (
-        text
+      {words.length > 0 ? (
+        words
           .slice(blockStart, blockEnd)
           .map((word, i) => (
             <Word
               key={i}
               word={word}
-              index={i}
-              currentWordIndex={currentWordIndex}
               isCurrentWord={blockStart + i === currentWordIndex}
             />
           ))

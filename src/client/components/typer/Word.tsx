@@ -1,4 +1,5 @@
 import type { LetterState } from "../../types/session";
+import type { SessionState } from "../../store/store";
 
 type LetterProps = {
   letter: string;
@@ -6,21 +7,23 @@ type LetterProps = {
   state: LetterState;
 };
 
-const Letter = ({ letter, isCurrentLetter, state }: LetterProps) => {
+const Letter = ({ letter, state }: LetterProps) => {
   function getLetterColor(state: LetterState) {
     switch (state) {
       case "correct":
-        return "text-green-500";
+        return "text-yellow-900 border-transparent";
+      case "current":
+        return "text-yellow-600 border-yellow-900";
       case "incorrect":
-        return "text-red-500";
+        return "text-red-600 border-transparent";
       case "not-typed":
-        return "text-gray-500";
+        return "text-yellow-600 border-transparent";
     }
   }
   return (
     <span
-      className={`inline-block ${
-        isCurrentLetter && "animate-pulse"
+      className={`inline-block border-l ${
+        state === "current" && "animate-pulse"
       } ${getLetterColor(state)}`}
     >
       {letter}
@@ -29,26 +32,21 @@ const Letter = ({ letter, isCurrentLetter, state }: LetterProps) => {
 };
 
 type WordProps = {
-  word: string;
-  index: number;
-  currentWordIndex: number;
+  word: SessionState["words"][0];
   isCurrentWord: boolean;
 };
 
-export const Word = ({
-  word,
-  index,
-  currentWordIndex,
-  isCurrentWord,
-}: WordProps) => {
+export const Word = ({ word, isCurrentWord }: WordProps) => {
   return (
-    <span className={`text-xl ${isCurrentWord ? "bg-yellow-300" : ""}`}>
-      {word.split("").map((letter, i) => (
+    <span
+      className={`text-md font-mono tracking-tight ${isCurrentWord ? "" : ""}`}
+    >
+      {word.letterStatuses.map(({ letter, status }, i) => (
         <Letter
           key={i}
           letter={letter}
           isCurrentLetter={isCurrentWord}
-          state="not-typed"
+          state={status}
         />
       ))}
     </span>
