@@ -11,13 +11,13 @@ const Letter = ({ letter, state }: LetterProps) => {
   function getLetterColor(state: LetterState) {
     switch (state) {
       case "correct":
-        return "text-yellow-900 border-transparent";
+        return "text-yellow-900 border-yellow-200";
       case "current":
         return "text-yellow-600 border-yellow-600";
       case "incorrect":
-        return "text-red-600 border-transparent";
+        return "text-red-600 border-yellow-200 underline";
       case "not-typed":
-        return "text-yellow-600 border-transparent";
+        return "text-yellow-600 border-yellow-200";
     }
   }
   return (
@@ -39,7 +39,9 @@ type WordProps = {
 export const Word = ({ word, isCurrentWord }: WordProps) => {
   return (
     <span
-      className={`text-md font-mono tracking-tight ${isCurrentWord ? "" : ""}`}
+      className={`text-md font-mono tracking-tight decoration-red-600 ${
+        isCurrentWord ? "" : ""
+      }`}
     >
       {word.letterStatuses.map(({ letter, status }, i) => (
         <Letter
