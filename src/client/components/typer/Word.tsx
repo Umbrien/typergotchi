@@ -13,7 +13,7 @@ const Letter = ({ letter, state }: LetterProps) => {
       case "correct":
         return "text-yellow-900 border-transparent";
       case "current":
-        return "text-yellow-600 border-yellow-900";
+        return "text-yellow-600 border-yellow-600";
       case "incorrect":
         return "text-red-600 border-transparent";
       case "not-typed":
