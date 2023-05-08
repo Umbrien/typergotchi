@@ -2,7 +2,7 @@
 
 # 🐝Typergotchi ⌨️
 
-Typergotchi is an innovative typing trainer app build with [🐝 Wasp](https://wasp-lang.dev/) that incorporates role-playing game (RPG) elements. The app allows users to improve their typing skills by completing levels and earning coins, which can be used to purchase new skins that enhance the user's experience during the story mode. In addition, users can compete against their friends in the PvP mode, where they can put their typing skills to the test. While the story mode and PvP mode are still in development, users can still sign up and train to type text in solo mode. Typergotchi is an engaging and fun way to improve typing skills while also enjoying RPG gameplay.
+Typergotchi is an innovative typing trainer app built with [🐝 Wasp](https://wasp-lang.dev/) that incorporates role-playing game (RPG) elements. The app allows users to improve their typing skills by completing levels and earning coins, which can be used to purchase new skins that enhance the user's experience during the story mode. In addition, users can compete against their friends in the PvP mode, where they can put their typing skills to the test. While the story mode and PvP mode are still in development, users can still sign up and train to type text in solo mode. Typergotchi is an engaging and fun way to improve typing skills while also enjoying RPG gameplay.
 
 ![Signup stage 2](/assets/signup-stage-2.png)
 
@@ -13,7 +13,7 @@ After selecting your boi, it is generating on server through jobs: [R2](https://
 ## TODO
 
 - [x] 🐝 Solo mode
-- [ ] 🐸 Story mode
+- [ ] 🐞 Story mode
 - [ ] ⚔️ PvP mode
 
 ![Solo mode](/assets/solo-mode.png)
@@ -26,7 +26,7 @@ Copy `.env.server.example` as `.env.server`, then fill in with approppriate valu
 
 **🌱 Seeding**
 
-You can seed db by running `wasp db seed`
+You can seed db with initial skins and armor by running `wasp db seed`
 
 # Startup
 

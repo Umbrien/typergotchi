@@ -10,7 +10,11 @@ export function SignupPage() {
             <SignupForm />
             <br />
             <span className="text-sm font-medium text-gray-900">
-              I already have an account (<Link to="/login">go to login</Link>).
+              I already have an account (
+              <Link to="/login" className="underline">
+                go to login
+              </Link>
+              ).
             </span>
             <br />
           </div>

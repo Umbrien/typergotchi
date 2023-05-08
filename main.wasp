@@ -107,7 +107,7 @@ psl=}
 
 route RootRoute { path: "/", to: MainPage }
 page MainPage {
-  component: import Main from "@client/MainPage.jsx"
+  component: import Main from "@client/MainPage"
 }
 
 route LoginRoute { path: "/login", to: LoginPage }
