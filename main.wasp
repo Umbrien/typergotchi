@@ -19,7 +19,7 @@ app typergotchi {
           clientRoute: PasswordResetRoute,
           getEmailContentFn: import { getPasswordResetEmailContent } from "@server/auth/email.js",
         },
-        allowUnverifiedLogin: false,
+        allowUnverifiedLogin: true,
       },
     },
     onAuthFailedRedirectTo: "/login"
