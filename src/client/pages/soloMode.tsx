@@ -9,6 +9,7 @@ import { IconAbc, IconClock } from "@tabler/icons-react";
 import { useKeyPress } from "../hooks/useKeyPress";
 import { useSessionStore } from "../store/store";
 import { secondsPretty, secondsToTimeString } from "../utils/session";
+import { Link } from "react-router-dom";
 
 function HeaderSelectBtn({
   children,
@@ -222,9 +223,9 @@ export function SoloMode() {
             ) : (
               <p>
                 Please{" "}
-                <a className="underline" href="/login">
+                <Link className="underline" to="/login">
                   log in
-                </a>{" "}
+                </Link>{" "}
                 to save your results
               </p>
             )}

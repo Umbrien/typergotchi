@@ -7,8 +7,10 @@ import "./Main.css";
 import { useKeyPress } from "./hooks/useKeyPress";
 import { Link } from "react-router-dom";
 
-// @ts-ignore
-const bucketUrl = import.meta.env.REACT_APP_BUCKET_URL;
+const bucketUrl =
+  // @ts-ignore
+  import.meta.env.REACT_APP_BUCKET_URL ||
+  "https://r2.typergotchi.win/typergotchi/";
 
 function ModeButton({
   children,
@@ -79,7 +81,7 @@ const MainPage = () => {
               className="h-96"
               src={
                 bucketUrl +
-                (user?.daBoiHappyImg ?? "generatedBoiz/1-happy-1.png")
+                (user?.daBoiHappyImg ?? "generatedBoiz/2-happy-5.png")
               }
               alt="Da Boi"
             />

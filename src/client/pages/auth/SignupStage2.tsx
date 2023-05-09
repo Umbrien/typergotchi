@@ -8,8 +8,10 @@ import fetchDaBoiArmor from "@wasp/queries/fetchDaBoiArmor";
 import registerStep2 from "@wasp/actions/registerStep2";
 import { HttpError } from "../../types/httpTypes";
 
-// @ts-ignore
-const bucketUrl = import.meta.env.REACT_APP_BUCKET_URL;
+const bucketUrl =
+  // @ts-ignore
+  import.meta.env.REACT_APP_BUCKET_URL ||
+  "https://r2.typergotchi.win/typergotchi/";
 
 export function SignupStage2() {
   const history = useHistory();
